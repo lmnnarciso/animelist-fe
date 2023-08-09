@@ -13,9 +13,6 @@ import Loading from "./loading"
 
 async function getData({ id }: { id: string }) {
   const res = await fetch(`https://api.jikan.moe/v4/anime/${id}/full`)
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
-  //   console.log({ res })
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data")

@@ -17,8 +17,9 @@ export default function Error({
   }, [error])
 
   return (
-    <div>
-      Error
+    <div className="grid h-[100vh] w-full place-content-center">
+      <h1 className="text-xl">Something went wrong!</h1>
+      <pre>{error.message}</pre>
       <Button onClick={() => reset()}>Go back</Button>
     </div>
   )

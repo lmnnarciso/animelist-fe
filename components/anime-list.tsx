@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { Anime } from "@/types/anime"
+import { Pagination } from "@/types/pagination"
 import {
   Card,
   CardContent,
@@ -15,12 +16,18 @@ import { Button } from "./ui/button"
 
 async function getData({
   search,
+  page,
 }: {
   search: string
-}): Promise<{ data: Anime[] }> {
-  const res = await fetch(`https://api.jikan.moe/v4/anime?q=${search ?? ""}`, {
-    cache: "force-cache",
-  })
+  page: string
+}): Promise<{ data: Anime[] & { pagination: Pagination } }> {
+  const res = await fetch(
+    `https://api.jikan.moe/v4/anime?q=${search ?? ""}&page=${page ?? "1"}`,
+    {
+      cache: "force-cache",
+    }
+  )
+
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data")
@@ -32,9 +39,16 @@ async function getData({
 export default async function AnimeList({
   searchParams,
 }: {
-  searchParams: { q: string }
+  searchParams: { q: string; page: string }
 }) {
-  const data = await getData({ search: searchParams.q })
+  const data = await getData({
+    search: searchParams.q,
+    page: searchParams.page,
+  })
+  if (data.data.length === 0) {
+    return <div className="absolute left-1/2 top-1/2">No anime found</div>
+  }
+
   return (
     <>
       {data.data.map((item) => (
