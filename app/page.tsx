@@ -17,6 +17,7 @@ export default async function AnimePage({
       <SearchInput />
       <div className="relative grid grid-cols-1 gap-4 p-8 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
         <Suspense fallback={<Loading />}>
+          {/* @ts-expect-error Server Component */}
           <AnimeList searchParams={searchParams} />
         </Suspense>
       </div>
